@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_seat_app/seat_bottom.dart';
+import 'package:flutter_seat_app/seat_select_box.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,31 +12,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: SeatPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
+class SeatPage extends StatefulWidget {
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<SeatPage> createState() => _SeatPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _SeatPageState extends State<SeatPage> {
+  int? selectedRow;
+  int? selectedCol;
 
-  void _incrementCounter() {
+  void onSelected(int row, int col) {
     setState(() {
-      _counter++;
+      selectedRow = row;
+      selectedCol = col;
     });
   }
 
@@ -42,28 +37,15 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Text('Seats'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
+      backgroundColor: Colors.grey[200],
+      body: Column(
+        children: [
+          SeatSelectBox(selectedRow, selectedCol, onSelected),
+          SeatBottom(selectedRow, selectedCol),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
